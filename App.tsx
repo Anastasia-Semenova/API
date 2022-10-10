@@ -24,18 +24,10 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>TEXTTEXT</Text>
-      </View>
-      <Text style={styles.h1}>Пятиметровый «Тетрис» попал в Книгу рекордов Гиннесса как самый большой в мире</Text>
+      <Image source={kil1} style={styles.image} />
+      <Text style={styles.h1}>Congratulation, your order is accepted</Text>
       <Text style={styles.description}>Испанские энтузиасты собрали его вручную. По размерам автомат с игрой обгоняет африканского слона, а по высоте — жирафа. Чтобы сыграть в него, нужно забраться по приставной лестнице.</Text>
-      <Text style={styles.sometxt}>Также создатели написали для него специальную программу, чтобы адаптировать всеми любимую игру под большой экран.</Text>
-      <Text style={styles.data}>2017-11-27 13:03:01</Text>
-      <View style={styles.item}>
-        <Text style={styles.gon}>Gon</Text>
-        <Image source={gon1} style={styles.image}></Image>
-      </View>
-      <AppButton title={'Like'}></AppButton>
+      <AppButton title={'Like'} />
     </View>
   );
 }
@@ -44,83 +36,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    alignSelf: "center",
   },
   h1: {
-    fontSize: 24,
+    fontSize: 20,
     color: '#a7a3bf',
     fontWeight: '700',
     marginLeft: 10,
     marginRight: 10,
-    marginTop: 20,
-  },
-  text: {
-    fontSize: 20,
-    marginTop: 20,
-    color: '#2f9e77',
-    fontWeight: '700'
+    marginTop: 50,
+    textAlign: 'center',
   },
   description: {
     fontSize: 16,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 20,
+    marginLeft: 30,
+    marginRight: 30,
+    marginTop: 30,
     color: '#a7a3bf',
-    fontWeight: '500'
-  },
-  header: {
-    //flex:1,
-    backgroundColor: '#9aeaef',
-    //justifyContent: 'center',
-    width: '100%',
-    height: 150,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  headerText: {
-    fontSize: 32,
-    color: '#fff',
-    fontWeight: '600',
-  },
-  sometxt: {
-    fontSize: 16,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 20,
-    color: '#9aeaef',
-    fontWeight: '600'
-  },
-  data: {
-    fontSize: 16,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 20,
-    color: '#a7a3bf',
-    fontWeight: '400'
-  },
-  item: {
-    backgroundColor: '#fff',
-    padding: 15,
-    marginVertical: 8,
-    flexDirection: "row-reverse",
-    flexWrap: "nowrap",
-    justifyContent: "flex-end",
-    borderRadius: 10,
-    alignItems: 'center',
+    fontWeight: '400',
+    textAlign: 'center',
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 200,
+    height: 200,
     resizeMode: 'cover',
-    borderRadius: 50,
-    marginLeft: 0
+    marginTop: 100,
+    alignSelf: "center",
   },
   appButtonContainer: {
     elevation: 8,
     backgroundColor: "#9aeaef",
     borderRadius: 30,
     paddingVertical: 10,
-    paddingHorizontal: 120,
-    marginTop: 30
+    width: 300,
+    marginTop: 50,
+    alignSelf: "center",
   },
   appButtonText: {
     fontSize: 18,
@@ -129,12 +79,4 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textTransform: "uppercase"
   },
-  gon: {
-    fontSize: 24,
-    color: '#9aeaef',
-    fontWeight: '700',
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 20,
-  }
 });
