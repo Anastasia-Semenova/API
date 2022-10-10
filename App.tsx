@@ -1,44 +1,63 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, ImageBackground, Button } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, Button, TouchableOpacity } from 'react-native';
 import image from './assets/image.png';
 import gon1 from './assets/gon1.png';
 import gon2 from './assets/gon2.png';
 import gon3 from './assets/gon3.png';
-import kil1 from './assets/kil1.png';
-import kil2 from './assets/kil2.png';
-import kil3 from './assets/kil3.png';
-import kur1 from './assets/kur3.png';
-import kur2 from './assets/kur2.png';
-import kur3 from './assets/kur1.png';
-import { useFonts } from 'expo-font';
-import { Header } from 'react-native/Libraries/NewAppScreen';
+import star from './assets/star.png';
+import blue from './assets/blue.png';
+import red from './assets/red.png';
+import pink from './assets/pink.png';
+import yellow from './assets/yellow.png';
+import s from './assets/letter-s.png';
+import m from './assets/letter-m.png';
+import l from './assets/letter-l.png';
 
 export default function App() {
+
+  const AppButton = ({ title }) => (
+    <TouchableOpacity style={styles.appButtonContainer}>
+      <Text style={styles.appButtonText}>{title}</Text>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.container}>
-      <ImageBackground source={image} style={styles.image}>
-      <Text style={styles.h1}>Instagram of 2d</Text>
-      <Text style={styles.text}>Gon Freecss</Text>
+
       <ScrollView horizontal={true} bounces={false} style={styles.scroll}>
-        <Image style={styles.stretch} source={gon1}/>
-        <Image style={styles.stretch} source={gon2}/>
-        <Image style={styles.stretch} source={gon3}/>
+        <Image style={styles.stretch} source={gon1} />
+        <Image style={styles.stretch} source={gon2} />
+        <Image style={styles.stretch} source={gon3} />
       </ScrollView>
-      <Text style={styles.text}>Killua Zoldyck</Text>
-      <ScrollView horizontal={true} bounces={false} style={styles.scroll}>
-        <Image style={styles.stretch} source={kil1}/>
-        <Image style={styles.stretch} source={kil2}/>
-        <Image style={styles.stretch} source={kil3}/>
-      </ScrollView>
-      <Text style={styles.text}>Kurapica</Text>
-      <ScrollView horizontal={true} bounces={false} style={styles.scroll}>
-        <Image style={styles.stretch} source={kur1}/>
-        <Image style={styles.stretch} source={kur2}/>
-        <Image style={styles.stretch} source={kur3}/>
-      </ScrollView>
-      <Button title='Please write us'></Button>
-      </ImageBackground>
+      <Text style={styles.h1}>Some Item</Text>
+      <Text style={styles.text}>$28.45</Text>
+      <Text style={styles.description}>Описание товара. описание товописание тов товарание товараописание товараописание товараописание товараописание товараописание товараописание товара</Text>
+      <View style={styles.allicons}>
+        <Image source={star} style={styles.icon}></Image>
+        <Image source={star} style={styles.icon}></Image>
+        <Image source={star} style={styles.icon}></Image>
+        <Image source={star} style={styles.icon}></Image>
+        <Image source={star} style={styles.icon}></Image>
+      </View>
+      <View style={styles.allicons}>
+        <Image source={blue} style={styles.icon}></Image>
+        <Image source={red} style={styles.icon}></Image>
+        <Image source={pink} style={styles.icon}></Image>
+        <Image source={yellow} style={styles.icon}></Image>
+      </View>
+      {/* <View style={styles.allicons}>
+        <Text style={styles.size}>S</Text>
+        <Text style={styles.size}>M</Text>
+        <Text style={styles.size}>L</Text>
+        <Text style={styles.size}>XL</Text>
+      </View> */}
+      <View style={styles.allicons}>
+        <Image source={s} style={styles.icon}></Image>
+        <Image source={m} style={styles.icon}></Image>
+        <Image source={l} style={styles.icon}></Image>
+      </View>
+      <AppButton title={'ADD TO CART'}></AppButton>
     </View>
   );
 }
@@ -46,38 +65,76 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    //alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#fcf2f3',
+    alignItems: 'center',
   },
   image: {
-    flex: 0,
     resizeMode: 'cover',
-    justifyContent: 'center',
   },
   stretch: {
-    width: 150,
-    height: 150,
+    width: 200,
+    height: 200,
     resizeMode: 'stretch',
   },
   scroll: {
-    width: 150,
-    maxHeight: 150,
-    marginTop: 10,
-    marginBottom: 50,
-    left:130
-  },
-  h1: {
-    fontSize:28,
-    fontWeight:'bold',
-    flexDirection:'row',
-    left: 25,
+    width: 200,
+    maxHeight: 200,
+    marginTop: 100,
     marginBottom: 20,
   },
-  text: {
-    fontSize:20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    left:130
+  h1: {
+    fontSize: 28,
+    flexDirection: 'row',
+    color: '#a7a3bf',
+    fontWeight: '700'
   },
+  text: {
+    fontSize: 20,
+    marginTop: 20,
+    color: '#2f9e77',
+    fontWeight: '700'
+  },
+  icon: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 20,
+  },
+  allicons: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    marginTop: 10,
+  },
+  description: {
+    fontSize: 16,
+    marginLeft: 10,
+    marginRight: 10,
+    textAlign: 'center',
+    marginTop: 20,
+    color: '#a7a3bf',
+    fontWeight: '500'
+  },
+  size: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 10,
+  },
+  appButtonContainer: {
+    elevation: 8,
+    backgroundColor: "#a4c8d5",
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 120,
+    marginTop: 30
+  },
+  appButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase"
+  }
 });
