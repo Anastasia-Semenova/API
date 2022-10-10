@@ -112,7 +112,9 @@ const styles = StyleSheet.create({
     height: 100,
     resizeMode: 'cover',
     borderRadius: 50,
-    marginLeft: 0
+    marginLeft: 0,
+    borderColor: "#9aeaef",
+    borderWidth: 4,
   },
   appButtonContainer: {
     elevation: 8,
