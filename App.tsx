@@ -1,26 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, Button, TouchableOpacity, TextInput } from 'react-native';
-import { NavigationContainer } from
-  '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import CustomComponents from './components/CustomComponents';
+import React from 'react'
+import { View, Button, Text } from 'react-native'
+import { makeAutoObservable } from 'mobx'
+import { observer } from 'mobx-react-lite'
 
-function App() {
-  return (
-    <View style={styles.view}>
-      <CustomComponents />
-    </View>
+class Counter {
+  count = 0
 
-  )
+  constructor() {
+    makeAutoObservable(this)
+  }
+
+  increment() {
+    this.count += 1
+  }
+
+  decrement() {
+    this.count -= 1
+  }
+
+  reset() {
+    this.count = 0
+  }
 }
 
-const styles = StyleSheet.create({
-  view: {
-      flex: 1,
-      alignContent: 'center',
-      padding: 16,
-  },
-});
+const counter = new Counter()
+
+const App = observer(() => (
+  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <Text>{counter.count}</Text>
+    <Button onPress={() => counter.increment()} title="+" />
+    <Button onPress={() => counter.decrement()} title="-" />
+    <Button onPress={() => counter.reset()} title="Reset" />
+  </View>
+))
 
 export default App;
