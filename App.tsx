@@ -1,37 +1,31 @@
 import React from 'react'
 import { View, Button, Text } from 'react-native'
-import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
+import CounterStore from './store/CounterStore'
+import ClickerStore from './store/ClickerStore'
 
-class Counter {
-  count = 0
-
-  constructor() {
-    makeAutoObservable(this)
+const App = observer(() => {
+  const onPlusClick = () => {
+    CounterStore.increment()
+    ClickerStore.increment()
   }
 
-  increment() {
-    this.count += 1
+  const onMinusClick = () => {
+    CounterStore.decrement()
+    ClickerStore.increment()
   }
 
-  decrement() {
-    this.count -= 1
-  }
+  const onResetClick = () => CounterStore.reset();
 
-  reset() {
-    this.count = 0
-  }
-}
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>{CounterStore.count}</Text>
+      <Button onPress={onPlusClick} title="+" />
+      <Button onPress={onMinusClick} title="-" />
+      <Button onPress={onResetClick} title="Reset" />
+      <Text>Total click count: {ClickerStore.count}</Text>
+    </View>
+  )
+})
 
-const counter = new Counter()
-
-const App = observer(() => (
-  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Text>{counter.count}</Text>
-    <Button onPress={() => counter.increment()} title="+" />
-    <Button onPress={() => counter.decrement()} title="-" />
-    <Button onPress={() => counter.reset()} title="Reset" />
-  </View>
-))
-
-export default App;
+export default App
