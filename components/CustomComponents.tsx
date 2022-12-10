@@ -1,9 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, Button, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView, FlatList, SafeAreaView } from 'react-native';
-import { NavigationContainer } from
-    '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 
 function CustomComponents() {
 
@@ -12,18 +9,6 @@ function CustomComponents() {
     const [sizea, setSizea] = useState<string>('');
     const [color, setColor] = useState<string>('');
     const [boxArray, setBoxArray] = useState<TBox[]>([]);
-
-    function BoxModel(id, color, size) {
-        return {
-            id,
-            color,
-            size,
-        };
-    }
-
-    const keyExtractor = (index) => {
-        return index.toString();
-    };
 
     const onSubmit = () => {
         if (sizea != undefined && color != undefined) {
