@@ -5,7 +5,7 @@ function NumPad(props) {
     return (
       <View style={styles.container}>
         <TouchableOpacity style={styles.button} onPress={props.minus}>
-          <Text style={styles.appButtonText}>-</Text>
+          <Text style={styles.appButtonText}>7</Text>
         </TouchableOpacity>
         <Text style={styles.text}>{props.state}</Text>
         <TouchableOpacity style={styles.button} onPress={props.plus}>
