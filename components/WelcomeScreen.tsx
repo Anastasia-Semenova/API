@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     },
     text: {
         alignSelf: 'center',
+        fontSize: 30,
     }
 });
 
