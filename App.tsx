@@ -1,28 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, Button, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, Image, Button, TouchableOpacity, TextInput} from 'react-native';
+import { NavigationContainer } from
+'@react-navigation/native' ;
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginForm from './components/LoginForm';
+import WelcomeScreen from './components/WelcomeScreen';
 
-export default function App() {
-  const [pressedCount, setPressedCount] = useState(0);
-  return (
-    <View style={{ flex: 1, justifyContent: 'center' }}>
-    <Text style={{ margin: 16 }}>
-    {pressedCount > 0
-    ? `The button was pressed ${pressedCount} times!`
-    : 'The button isn\'t pressed yet'
-    }
-  </Text>
-  <Button
-    title='Press me'
-    onPress={()=>setPressedCount(pressedCount+1)}
-    disabled={true ? pressedCount >= 3 : false}
-  />
-  {pressedCount >= 3 && 
-    <Button
-          title='Able button'
-          onPress={()=>setPressedCount(0)}
-        />
-  }
- </View>
- );
+const Stack = createNativeStackNavigator();
+
+function App(){
+  return(
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name='Login' component={LoginForm}/>
+        <Stack.Screen name='Welcome' component={WelcomeScreen}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
 }
+export default App;
+
+
