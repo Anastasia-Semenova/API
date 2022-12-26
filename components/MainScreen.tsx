@@ -1,71 +1,68 @@
-import { StatusBar } from 'expo-status-bar' ;
-import React , {useEffect , useState } from 'react' ;
-import { Button , StyleSheet , Text, View, ScrollView , TouchableOpacity , Image , TextInput , FlatList } from 'react-native' ;
-export default function App({navigation}) {
-  const [todos, setTodos] = useState<string[]>([]);
-  const [text, setText ] = useState ('');
-  const [done, setDone] = useState<string[]>([]);
-  const addTodo = () => {
-    let newTodos = [... todos ];
-    newTodos.push(text);
-    setTodos (newTodos );
-    setText ('');
-  };
+import { StatusBar } from 'expo-status-bar';
+import React, { useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite'
+import { Button, StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, TextInput, FlatList } from 'react-native';
+import todo from '../store/todo';
+import logs from '../store/logs';
 
-  const deleteTodo = (item) => {
-    let newTodos = [... todos];
-    newTodos.splice(newTodos.indexOf(item), 1)
-    setTodos (newTodos );
-    let doneTodos = [... done];
-    doneTodos.push(item);
-    setDone(doneTodos);
-  };
-
-  const addToTodo = (item) => {
-    let doneTodos = [... done];
-    doneTodos.splice(doneTodos.indexOf(item), 1)
-    setDone (doneTodos );
-    let newTodos = [... todos];
-    newTodos.push(item);
-    setTodos(newTodos);
-  };
-
-const keyExtractor = (index ) => {
-    return index .toString ();
-};
-
-return (
- <View style ={styles .container }>
-    <View style={styles.header}/>
-    <Text style={styles.text}>NEW:</Text>
-    <FlatList style={styles.list}
-    data={todos }
-    keyExtractor ={(item, index ) => keyExtractor (index )}
-    renderItem ={({item}) =>
-    <View style ={styles .todoLine }>
-      <TouchableOpacity style ={styles .todoLineTouch }  onPress={() => navigation.navigate('One', {item, todos, done, setTodos, setDone})}>
-        <Text style ={{flex: 3}}>{item}</Text>
-      </TouchableOpacity >
-    </View>}
-    />
-    <TextInput style ={styles .textInput } onChangeText ={newText => setText (newText )} value ={text} placeholder="Add new TODO"></TextInput >
-    <Button title =" ADD " onPress ={() => addTodo () }></Button >
-    <StatusBar style ="auto" />
-    <Text style={styles.text}>DONE:</Text>
-    <FlatList
-      data={done }
-      keyExtractor ={(item, index ) => keyExtractor (index )}
-      renderItem ={({item}) =>
-      <View style ={styles .todoLine }>
-        <TouchableOpacity style ={styles .todoLineTouch }  onPress={() => navigation.navigate('Done', {item, todos, done, setTodos, setDone})}>
-          <Text style ={{flex: 3}}>{item}</Text>
-        </TouchableOpacity >
-      </View>}
-    />
-    <View style={styles.header}/>
- </View>
- );
+export type TTodoList = {
+  navigation: any;
 }
+
+const App = observer(({ navigation }: TTodoList) => {
+  const [text, setText] = useState('');
+
+  const onSubmit = () => {
+    todo.addTodo({
+      id: Date.now().toString(),
+      completed: false,
+      title: text
+    })
+    logs.addLog({
+      id: Date.now().toString(),
+      title: `Added new item ` + text
+    })
+    setText('');
+  }
+
+
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header} />
+      <Text style={styles.text}>NEW:</Text>
+      <FlatList style={styles.list}
+        data={todo.todos.filter(({ completed }) => !completed)}
+        keyExtractor={(_, index) => index.toString()}
+        renderItem={({ item }) =>
+          <View style={styles.todoLine}>
+            <TouchableOpacity style={styles.todoLineTouch} onPress={() => navigation.navigate('One', { itemId: todo.todos.indexOf(item) })}>
+              <Text style={{ flex: 3 }}>{item.title}</Text>
+            </TouchableOpacity >
+          </View>}
+      />
+      <TextInput style={styles.textInput} onChangeText={newText => setText(newText)} value={text} placeholder="Add new TODO"></TextInput >
+      <Button title=" ADD " onPress={() => onSubmit()}></Button >
+      <StatusBar style="auto" />
+      <Text style={styles.text}>DONE:</Text>
+      <FlatList
+        data={todo.todos.filter(({ completed }) => completed)}
+        keyExtractor={(_, index) => index.toString()}
+        renderItem={({ item }) =>
+          <View style={styles.todoLine}>
+            <TouchableOpacity style={styles.todoLineTouch} onPress={() => navigation.navigate('Done', { itemId: todo.todos.indexOf(item) })}>
+              <Text style={{ flex: 3 }}>{item.title}</Text>
+            </TouchableOpacity >
+          </View>}
+      />
+      <Button title=" LOGS " onPress={() => navigation.navigate('Logs')}></Button >
+      <View style={styles.header} />
+    </View>
+  );
+});
+
+export default App;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -76,7 +73,7 @@ const styles = StyleSheet.create({
     height: 20,
   },
   todoLine: {
-    
+
   },
   list: {
     height: 250,
@@ -99,7 +96,7 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    
+
   },
   text: {
     fontSize: 28,

@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainScreen from './components/MainScreen';
 import OneTodo from './components/OneTodo';
 import OneDone from './components/OneDone';
+import LogsScreen from './components/LogsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ function App() {
         <Stack.Screen name="Home" component={MainScreen}/>
         <Stack.Screen name="One" component={OneTodo}/>
         <Stack.Screen name="Done" component={OneDone}/>
+        <Stack.Screen name='Logs' component={LogsScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   )

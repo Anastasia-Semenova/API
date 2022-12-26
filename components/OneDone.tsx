@@ -1,50 +1,55 @@
-import { StatusBar } from 'expo-status-bar' ;
-import React , {useEffect , useState } from 'react' ;
-import { Button , StyleSheet , Text, View, ScrollView , TouchableOpacity , Image , TextInput , FlatList } from 'react-native' ;
-import { NavigationContainer } from '@react-navigation/native' ;
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
+import React, { useState } from 'react';
+import { Button, Text, View } from 'react-native';
+import todo from '../store/todo';
+import logs from '../store/logs';
 
-function OneDone({navigation, route}){
+export type TTaskPage = {
+  navigation: any;
+  route: any;
+}
 
-    route = useRoute();
-    const item = route.params.item
-    
-      const addToTodo = () => {
-        let doneTodos = [... route.params.done];
-        doneTodos.splice(doneTodos.indexOf(item), 1)
-        route.params.setDone (doneTodos );
-        let newTodos = [... route.params.todos];
-        newTodos.push(item);
-        route.params.setTodos(newTodos);
-        navigation.goBack()
-      };
+const OneDone = observer(({ navigation, route }: TTaskPage) => {
 
-      const deleteDone = () => {
-        let doneTodos = [... route.params.done];
-        doneTodos.splice(doneTodos.indexOf(item), 1)
-        route.params.setDone (doneTodos );
-        let newTodos = [... route.params.todos];
-        navigation.goBack()
-      };
+  const { itemId } = route.params
+  const item = todo.todos[itemId];
+  
+  const addToTodo = () => {
+    todo.completeTodo(item.id)
+    logs.addLog({
+      id: Date.now().toString(),
+      title: `Return item to New ` + item.title
+    })
+    navigation.goBack()
+  };
 
-    return(
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={{color: '#000'}}>{item}</Text>
-        <Button
-          title="Return to TODO"
-          onPress={() => addToTodo()}
-        />
-        <Button
-          title="Delete"
-          onPress={() => deleteDone()}
-        />
-        <Button
-          title="Back to TODOS"
-          onPress={() => navigation.goBack()}
-        />
-      </View>
-    );
-  }
+  const deleteDone = () => {
+    todo.deleteTodo(item.id)
+    logs.addLog({
+      id: Date.now().toString(),
+      title: `Delete one item ` + item.title
+    })
+    navigation.goBack()
+  };
 
-  export default OneDone;
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text style={{ color: '#000' }}>{item.title}</Text>
+      <Button
+        title="Return to TODO"
+        onPress={() => addToTodo()}
+      />
+      <Button
+        title="Delete"
+        onPress={() => deleteDone()}
+      />
+      <Button
+        title="Back to TODOS"
+        onPress={() => navigation.goBack()}
+      />
+    </View>
+  )
+});
+
+export default OneDone;

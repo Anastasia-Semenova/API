@@ -1,37 +1,41 @@
-import { StatusBar } from 'expo-status-bar' ;
-import React , {useEffect , useState } from 'react' ;
-import { Button , StyleSheet , Text, View, ScrollView , TouchableOpacity , Image , TextInput , FlatList } from 'react-native' ;
-import { NavigationContainer } from '@react-navigation/native' ;
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useRoute } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
+import { observer } from 'mobx-react-lite';
+import React from 'react';
+import { Button, Image, StyleSheet, Text, View } from 'react-native';
+import todo from '../store/todo';
+import logs from '../store/logs';
 
-function OneTodo({navigation, route}){
+export type TTaskPage = {
+  navigation: any;
+  route: any;
+}
 
-    route = useRoute();
-    const item = route.params.item
+const OneTodo = observer(({ navigation, route }: TTaskPage) => {
 
-    const toDone = () => {
-        let newTodos = [... route.params.todos];
-        newTodos.splice(newTodos.indexOf(item), 1)
-        route.params.setTodos (newTodos );
-        let doneTodos = [... route.params.done];
-        doneTodos.push(item);
-        route.params.setDone(doneTodos);
-        navigation.goBack()
-      };
+  const { itemId } = route.params
+  const item = todo.todos[itemId];
 
-      const deleteTodo = () => {
-        let newTodos = [... route.params.todos];
-        newTodos.splice(newTodos.indexOf(item), 1)
-        route.params.setTodos (newTodos );
-        let doneTodos = [... route.params.done];
-        navigation.goBack()
-      };
+  const toDone = () => {
+    todo.completeTodo(item.id)
+    logs.addLog({
+      id: Date.now().toString(),
+      title: `Done one item ` + item.title
+    })
+    navigation.goBack()
+  };
 
-      const [selectedImage, setSelectedImage] = React.useState(null);
+  const deleteTodo = () => {
+    todo.deleteTodo(item.id)
+    logs.addLog({
+      id: Date.now().toString(),
+      title: `Delete one item ` + item.title
+    })
+    navigation.goBack()
+  };
 
-    const openImagePickerAsync = async () => {
+  const [selectedImage, setSelectedImage] = React.useState<any | null>(null);
+
+  const openImagePickerAsync = async () => {
     const pickerResult = await ImagePicker.launchImageLibraryAsync();
     if (pickerResult.cancelled === true) {
       return;
@@ -42,8 +46,8 @@ function OneTodo({navigation, route}){
 
   if (selectedImage !== null) {
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={{color: '#000'}}>{item}</Text>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text style={{ color: '#000' }}>{item.title}</Text>
         <Button
           title="Done"
           onPress={() => toDone()}
@@ -57,46 +61,49 @@ function OneTodo({navigation, route}){
           onPress={() => navigation.goBack()}
         />
         <View style={styles.photo}>
-            <Image source={{ uri: selectedImage.localUri }} style={styles.thumbnail} />
+          <Image source={{ uri: selectedImage.localUri }} style={styles.thumbnail} />
         </View>
       </View>
     );
   }
 
-    return(
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={{color: '#000'}}>{item}</Text>
-        <Button
-          title="Done"
-          onPress={() => toDone()}
-        />
-        <Button
-          title="Delete"
-          onPress={() => deleteTodo()}
-        />
-        <Button
-          title="Back to TODOS"
-          onPress={() => navigation.goBack()}
-        />
-        <Image source={{ uri: 'https://i.imgur.com/TkIrScD.png' }} style={styles.logo} />
-        <Button title="Add photo" onPress={()=>openImagePickerAsync()}
-        />
-      </View>
-    );
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text style={{ color: '#000' }}>{item.title}</Text>
+      <Button
+        title="Done"
+        onPress={() => toDone()}
+      />
+      <Button
+        title="Delete"
+        onPress={() => deleteTodo()}
+      />
+      <Button
+        title="Back to TODOS"
+        onPress={() => navigation.goBack()}
+      />
+      <Image source={{ uri: 'https://i.imgur.com/TkIrScD.png' }} style={styles.logo} />
+      <Button title="Add photo" onPress={() => openImagePickerAsync()}
+      />
+    </View>
+  )
+});
+
+const styles = StyleSheet.create({
+  /* Other styles hidden to keep the example brief... */
+  thumbnail: {
+    width: 300,
+    height: 300,
+    //resizeMode: "contain"
+  },
+  photo: {
+
+  },
+  logo: {
+
   }
 
-  const styles = StyleSheet.create({
-    /* Other styles hidden to keep the example brief... */
-    thumbnail: {
-      width: 300,
-      height: 300,
-      //resizeMode: "contain"
-    },
-    photo:{
+});
 
-    }
 
-  });
-  
-
-  export default OneTodo;
+export default OneTodo;
