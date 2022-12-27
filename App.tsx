@@ -1,26 +1,33 @@
-import * as React from 'react';
-import { NavigationContainer } from
-'@react-navigation/native' ;
-import { View, Text, Button, StyleSheet, Image } from 'react-native';
+import React, { useState } from 'react';
+import { observer } from 'mobx-react-lite'
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import MainScreen from './components/MainScreen';
-import OneTodo from './components/OneTodo';
-import OneDone from './components/OneDone';
-import LogsScreen from './components/LogsScreen';
+import ProductList from "./components/ProductList";
+import ProductCard from "./components/ProductCard";
+import Cart from "./components/Cart";
+import Favourite from './components/Favourite';
 
 const Stack = createNativeStackNavigator();
 
-function App() {
-  return(
+const AppTodo = observer(() => {
+  return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={MainScreen}/>
-        <Stack.Screen name="One" component={OneTodo}/>
-        <Stack.Screen name="Done" component={OneDone}/>
-        <Stack.Screen name='Logs' component={LogsScreen}/>
+        <Stack.Screen name="Home">
+          {props => <ProductList {...props} />}
+        </Stack.Screen>
+        <Stack.Screen name="ProductCard">
+          {props => <ProductCard {...props} />}
+        </Stack.Screen>
+        <Stack.Screen name="Cart">
+          {props => <Cart {...props} />}
+        </Stack.Screen>
+        <Stack.Screen name="Favorite">
+          {props => <Favourite {...props} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
-  )
-}
+  );
+})
 
-export default App;
+export default AppTodo;
